@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:id="@+id/rootLayout">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/CityEditText"
+        android:hint="@string/Label_Enter_A_City" />
+    <Button
+        android:text="@string/Label_Get_Weather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/GetWeatherButton" />
+    <GridLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gridLayout1">
+        <TextView
+            android:text="City Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/CityNameTextView"
+            android:textSize="36dp"
+            android:layout_row="0"
+            android:layout_column="0" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_row="1"
+            android:layout_column="0">
+            <TextView
+                android:text="50"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/MaxTemperatureTextView"
+                android:textSize="66dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom" />
+            <TextView
+                android:text="° C"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/CurrentWeatherUnitTextView"
+                android:gravity="bottom"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="6dp" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/WeatherImageView"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:src="@drawable/icon"
+            android:scaleType="fitCenter"
+            android:layout_rowSpan="2"
+            android:layout_marginLeft="12dp" />
+    </GridLayout>
+    <ListView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ForecastListView" />
+</LinearLayout>
