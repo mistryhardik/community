@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.3.0.967583" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="0.10.0-preview" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Services\" />
+    <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyWeatherApp.Models\MyWeatherApp.Models.csproj" />
+    <ProjectReference Include="..\MyWeatherApp.Repository\MyWeatherApp.Repository.csproj" />
+  </ItemGroup>
+</Project>

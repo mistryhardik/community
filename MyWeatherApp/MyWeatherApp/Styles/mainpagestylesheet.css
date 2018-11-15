@@ -1,0 +1,41 @@
+﻿.grid-master {
+    background-color:azure;
+}
+
+label{
+    color:darkgray;
+}
+
+.label-city {
+    font-size: 50;
+    font-style: bold;
+}
+
+.label-tempreature {
+    font-size: 100;
+    font-style: bold;
+}
+
+.label-condition {
+    font-size: 45;
+    font-style: bold;
+}
+
+.label-summary {
+    font-size: 12;
+}
+
+.footer {
+    -xf-orientation: horizontal;
+}
+
+.entry-city {
+    -xf-placeholder: New York;
+    -xf-placeholder-color: darkgray;
+}
+
+.button-refresh {
+    background-color: #29abdf;
+    color: white;
+    height: 40;
+}
