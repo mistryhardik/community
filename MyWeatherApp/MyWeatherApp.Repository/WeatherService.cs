@@ -107,7 +107,7 @@ namespace MyWeatherApp.Repository
                             return new WeatherCondition
                             {
                                 BackgroundColor = Color.SlateGray,
-                                TextColor = Color.White,
+                                TextColor = Color.Gray,
                                 Type = WeatherConditionType.Smoke
                             };
                         }
