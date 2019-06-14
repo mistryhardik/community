@@ -115,7 +115,7 @@ namespace MyWeatherApp.Repository
                         {
                             return new WeatherCondition
                             {
-                                BackgroundColor = Color.LightYellow,
+                                BackgroundColor = Color.OrangeRed,
                                 TextColor = Color.Navy,
                                 Type = WeatherConditionType.Haze
                             };
