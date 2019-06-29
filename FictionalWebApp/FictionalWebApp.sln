@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FictionalFunctionsApp", "Fi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fictional.Repository", "Fictional.Repository\Fictional.Repository.csproj", "{BFCCEA76-CBB7-45D7-8F39-D7EDE2727566}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fictional.XUnitTests", "Fictional.XUnitTests\Fictional.XUnitTests.csproj", "{99B128F2-B1AA-44ED-AA8E-10F54FCD9F52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{BFCCEA76-CBB7-45D7-8F39-D7EDE2727566}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFCCEA76-CBB7-45D7-8F39-D7EDE2727566}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFCCEA76-CBB7-45D7-8F39-D7EDE2727566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99B128F2-B1AA-44ED-AA8E-10F54FCD9F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99B128F2-B1AA-44ED-AA8E-10F54FCD9F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99B128F2-B1AA-44ED-AA8E-10F54FCD9F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99B128F2-B1AA-44ED-AA8E-10F54FCD9F52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
