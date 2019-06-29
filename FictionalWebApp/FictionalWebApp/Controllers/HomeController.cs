@@ -11,17 +11,16 @@ namespace FictionalWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        GreetingRepository greetingRepository;
+        readonly IGreetingRepository _greetingRepository;
 
-        public HomeController()
+        public HomeController(IGreetingRepository greetingRepository)
         {
-            if (greetingRepository == null)
-                greetingRepository = new GreetingRepository();
+            _greetingRepository = greetingRepository;
         }
 
         public IActionResult Index()
         {
-            var greeting = greetingRepository.GetGreetingMessage(DateTime.Now.Hour);
+            var greeting = _greetingRepository.GetGreetingMessage(DateTime.Now.Hour);
 
             ViewBag.Greeting = greeting;
 
