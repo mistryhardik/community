@@ -20,7 +20,7 @@ namespace FictionalWebApp.Controllers
 
         public IActionResult Index()
         {
-            var greeting = _greetingRepository.GetGreetingMessage(DateTime.Now.Hour);
+            var greeting = _greetingRepository.GetGreetingMessage(DateTime.UtcNow.Hour);
 
             ViewBag.Greeting = greeting;
 
