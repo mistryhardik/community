@@ -11,10 +11,8 @@ namespace Fictional.Repository
             if (hourOfDay > 12 & hourOfDay < 16)
                 return "Good afternoon";
 
-            if (hourOfDay >= 16 & hourOfDay <= 23)
+            else
                 return "Good evening";
-
-            return "Good afternoon";
         }
     }
 }
