@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  fictionalwebapp:
+    image: ${DOCKER_REGISTRY-}fictionalwebapp
+    build:
+      context: .
+      dockerfile: FictionalWebApp/Dockerfile

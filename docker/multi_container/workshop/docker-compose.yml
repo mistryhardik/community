@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  webapp:
+    image: workshopcontainers.azurecr.io/webapp
+    build:
+      context: .
+      dockerfile: webapp/Dockerfile
+    ports:
+      - "8080:80"
+    # deploy:
+    #   replicas: 5
+
+  newsfeed:
+    image: workshopcontainers.azurecr.io/webapi
+    build:
+      context: .
+      dockerfile: webapi/Dockerfile
+
