@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
-    <UserSecretsId>b4832752-0a1e-4044-ac39-b27372192e25</UserSecretsId>
+    <UserSecretsId>24bb95b7-f70e-430e-9083-11e734536274</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,9 +11,7 @@
       <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
       <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Fictional.Repository\Fictional.Repository.csproj" />
-  </ItemGroup>
 </Project>
