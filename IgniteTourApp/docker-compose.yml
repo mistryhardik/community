@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  ignitetourapp:
+    image: ${DOCKER_REGISTRY-}ignitetourapp
+    build:
+      context: .
+      dockerfile: IgniteTourApp/Dockerfile
