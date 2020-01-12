@@ -1,4 +1,6 @@
-# MS-Workshops
+# AppCraftMeetups
+
+Join us today on our meetup.com group: https://www.meetup.com/appcraftmeetups/
 
 ### Welcome. This repository contains code samples and resources (if any) focused on Microsoft and OSS technologies.
 
