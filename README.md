@@ -6,6 +6,8 @@ Join us today on our meetup.com group: https://www.meetup.com/appcraftmeetups/
 
 We encourge you to participate by forking this repository or simply creating an issue if you have a suggestion or found a bug.
 
+You can browse the Azure DevOps here: https://dev.azure.com/appmattic/appcraftmeetups
+
 As of today, the repository contains code samples for:
 
 ### .NET Core
