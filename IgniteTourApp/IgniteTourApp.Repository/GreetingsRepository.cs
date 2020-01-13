@@ -14,11 +14,11 @@ namespace IgniteTourApp.Repository
             if (timeOfDay < 12)
                 return "Good morning";
 
-            //if (timeOfDay >= 12 & timeOfDay < 16)
-            //    return "Good afternoon";
+            if (timeOfDay >= 12 & timeOfDay < 16)
+                return "Good afternoon";
 
-            //if (timeOfDay >= 16 & timeOfDay <= 23)
-            //    return "Good evening";
+            if (timeOfDay >= 16 & timeOfDay <= 23)
+                return "Good evening";
 
             return "Good morning";
         }
