@@ -1,12 +1,6 @@
-# AppCraftMeetups
+### Welcome. This repository contains code samples and resources for the community efforts I have put in over the years.
 
-Join us today on our meetup.com group: https://www.meetup.com/appcraftmeetups/
-
-### Welcome. This repository contains code samples and resources (if any) focused on Microsoft and OSS technologies.
-
-We encourge you to participate by forking this repository or simply creating an issue if you have a suggestion or found a bug.
-
-You can browse the Azure DevOps here: https://dev.azure.com/appmattic/appcraftmeetups
+I encourge you to participate by forking this repository or simply creating an issue if you have a suggestion or found a bug.
 
 As of today, the repository contains code samples for:
 
