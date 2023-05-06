@@ -11,11 +11,11 @@ namespace gab.backend.Controllers
     [ApiController]
     public class HealthController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult Check()
+        [HttpGet("{timeout}")]
+        public ActionResult Check([FromRoute] int timeout = 0)
         {
             // simulated api endpoint not for production use ;)
-            Thread.Sleep(2000);
+            Thread.Sleep(timeout);
             
             // place your business logic here
             
