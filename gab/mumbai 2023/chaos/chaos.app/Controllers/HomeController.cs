@@ -17,7 +17,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        ViewData["WelcomeMessage"] = $"Welcome from {_configuration["App:Region"]}";
+        ViewData["WelcomeMessage"] = $"Welcome from {_configuration.GetSection("App:Region").Value}";
         
         return View();
     }
