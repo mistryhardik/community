@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gab.backend.Controllers
+namespace chaos.app.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

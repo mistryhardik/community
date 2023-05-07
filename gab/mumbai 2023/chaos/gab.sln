@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gab.backend", "gab.backend\gab.backend.csproj", "{951CC757-B332-4D92-B059-E559B0D3A624}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chaos.app", "chaos.app\chaos.app.csproj", "{623F975F-B65A-4126-ADA5-0AE7B68A2E97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{951CC757-B332-4D92-B059-E559B0D3A624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{951CC757-B332-4D92-B059-E559B0D3A624}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{951CC757-B332-4D92-B059-E559B0D3A624}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{951CC757-B332-4D92-B059-E559B0D3A624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{623F975F-B65A-4126-ADA5-0AE7B68A2E97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{623F975F-B65A-4126-ADA5-0AE7B68A2E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{623F975F-B65A-4126-ADA5-0AE7B68A2E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{623F975F-B65A-4126-ADA5-0AE7B68A2E97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
