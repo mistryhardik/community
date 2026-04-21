@@ -1,0 +1,35 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E1F4850-BB65-453D-B2EF-A6A930074A21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IgniteTourApp", "IgniteTourApp\IgniteTourApp.csproj", "{CEDE159F-8B6A-4DE8-A1F0-36AC54A87BF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IgniteTourApp.Repository", "IgniteTourApp.Repository\IgniteTourApp.Repository.csproj", "{F77B1410-68DF-4AAE-A9B7-A3B4880DA11E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IgniteTourApp.XUnitTests", "IgniteTourApp.XUnitTests\IgniteTourApp.XUnitTests.csproj", "{277A0232-F37C-4C9E-892D-66998BBDB5A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6719A8F-8ACC-44D1-BB50-4EBE7423E509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6719A8F-8ACC-44D1-BB50-4EBE7423E509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6719A8F-8ACC-44D1-BB50-4EBE7423E509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6719A8F-8ACC-44D1-BB50-4EBE7423E509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEDE159F-8B6A-4DE8-A1F0-36AC54A87BF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEDE159F-8B6A-4DE8-A1F0-36AC54A87BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEDE159F-8B6A-4DE8-A1F0-36AC54A87BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEDE159F-8B6A-4DE8-A1F0-36AC54A87BF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77B1410-68DF-4AAE-A9B7-A3B4880DA11E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77B1410-68DF-4AAE-A9B7-A3B4880DA11E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77B1410-68DF-4AAE-A9B7-A3B4880DA11E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77B1410-68DF-4AAE-A9B7-A3B4880DA11E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{277A0232-F37C-4C9E-892D-66998BBDB5A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{277A0232-F37C-4C9E-892D-66998BBDB5A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{277A0232-F37C-4C9E-892D-66998BBDB5A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{277A0232-F37C-4C9E-892D-66998BBDB5A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
