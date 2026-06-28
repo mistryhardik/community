@@ -1,0 +1,70 @@
+################################################################################
+# terraform.tfvars.example
+#
+# Copy to terraform.tfvars and fill in your values:
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# terraform.tfvars is in .gitignore — never commit it.
+#
+# Model versions confirmed available in East US, June 2026:
+#   gpt-4.1       2025-04-14  Deprecating  ← default (works on all plans)
+#   gpt-4.1-mini  2025-04-14  Deprecating  ← default mini
+#   gpt-5.1       2025-11-13  GA ✅         ← upgrade (may need higher quota)
+#   gpt-5-mini    2025-08-07  GA ✅         ← upgrade mini
+################################################################################
+
+# ── Your identity ─────────────────────────────────────────────────────────────
+apim_publisher_name  = "HackerSpace Mumbai"
+apim_publisher_email = "your-email@example.com"    # ← change this
+
+# ── Project naming ─────────────────────────────────────────────────────────────
+project_name   = "aiagent"    # max 8 chars, lowercase
+environment    = "dev"
+location       = "eastus"
+location_short = "eus"
+
+# ── App Service ───────────────────────────────────────────────────────────────
+app_service_sku = "B1"        # B1 = ~$13/month. F1 = free but cold starts.
+
+# ── OpenAI models ─────────────────────────────────────────────────────────────
+# OPTION A — GPT-4.1 family (default, safe for all subscription types)
+# openai_primary_deployment_name = "gpt-5.1"
+# openai_primary_model_name      = "gpt-4.1"
+# openai_primary_model_version   = "2025-04-14"
+# openai_primary_capacity        = 3
+
+# openai_mini_deployment_name    = "gpt-5-mini"
+# openai_mini_model_name         = "gpt-4.1-mini"
+# openai_mini_model_version      = "2025-04-14"
+# openai_mini_capacity           = 3
+
+# OPTION B — GPT-5.x family (latest GA, may need higher quota tier)
+# Uncomment and replace the block above with these to use gpt-5:
+#
+openai_primary_deployment_name = "gpt-5.1"
+openai_primary_model_name      = "gpt-5.1"
+openai_primary_model_version   = "2025-11-13"
+openai_primary_capacity        = 3
+
+openai_mini_deployment_name    = "gpt-5-mini"
+openai_mini_model_name         = "gpt-5-mini"
+openai_mini_model_version      = "2025-08-07"
+openai_mini_capacity           = 3
+
+# ── API Management ────────────────────────────────────────────────────────────
+apim_sku                       = "Developer_1"  # ~$50/month, no SLA
+apim_rate_limit_calls          = 20
+apim_rate_limit_period_seconds = 60
+apim_cache_duration_seconds    = 300
+
+# ── Tenant subscriptions ──────────────────────────────────────────────────────
+apim_tenant_subscriptions = [
+  { name = "tenant-a", display_name = "Tenant A — Workshop Member" },
+  { name = "tenant-b", display_name = "Tenant B — Workshop Member" },
+]
+
+# ── Tags ──────────────────────────────────────────────────────────────────────
+tags = {
+  owner = "your-name"           # ← change this
+  event = "Global Azure 2026"
+}
