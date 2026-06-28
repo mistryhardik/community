@@ -252,3 +252,10 @@ paket-files/
 *.sln.iml
 .vscode/settings.json
 gab/mumbai 2026/.DS_Store
+gab/mumbai 2026/AiAgentApi/AiAgentApi/deploy.zip
+gab/mumbai 2026/terraform/.terraform/
+gab/mumbai 2026/terraform/.terraform.lock.hcl
+gab/mumbai 2026/terraform/terraform.tfstate
+gab/mumbai 2026/terraform/terraform.tfstate.backup
+gab/.DS_Store
+.DS_Store
