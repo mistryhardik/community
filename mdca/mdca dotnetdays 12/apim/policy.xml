@@ -1,0 +1,69 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- 1. Validate subscription key is present -->
+        <check-header name="Ocp-Apim-Subscription-Key" failed-check-httpcode="401" failed-check-error-message="Missing subscription key" ignore-case="false" />
+        <!-- 2. Per-tenant rate limiting: 20 calls per 60 seconds -->
+        <rate-limit-by-key calls="20" renewal-period="60" counter-key="@(context.Subscription.Id)" remaining-calls-variable-name="remainingCalls" retry-after-header-name="Retry-After" remaining-calls-header-name="X-RateLimit-Remaining" />
+        <!-- Bonus: Enforce model and system prompt at gateway — tenants cannot override -->
+        <!--<set-body>@{
+            var body = context.Request.Body.As<Newtonsoft.Json.Linq.JObject>(true);
+            body["model"] = "gpt-4o-mini";
+            body["systemPrompt"] = "You are a concise technical assistant. Answer in 2-3 plain sentences maximum. No bullet points, no headers, no examples unless asked.";
+            return body.ToString();
+        }</set-body>-->
+        <!-- 3. Response caching: cache by message body for 5 minutes -->
+        <cache-lookup-value key="@("chat-" + context.Request.Body.As<string>(true).GetHashCode())" variable-name="cachedResponse" />
+        <choose>
+            <when condition="@(context.Variables.ContainsKey("cachedResponse"))">
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-header name="X-Cache" exists-action="override">
+                        <value>HIT</value>
+                    </set-header>
+                    <set-body>@((string)context.Variables["cachedResponse"])</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <!-- 4. Add cache MISS header for non-cached responses -->
+        <set-header name="X-Cache" exists-action="override">
+            <value>MISS</value>
+        </set-header>
+        <!-- 5. Forward to your App Service backend -->
+        <set-backend-service base-url="https://api-aiagent-demo.azurewebsites.net" />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+        <!-- 6. Store response in cache for 5 minutes (300 seconds) -->
+        <cache-store-value key="@("chat-" + context.Request.Body.As<string>(true).GetHashCode())" value="@(context.Response.Body.As<string>(true))" duration="300" />
+        <!-- 7. Log token usage per tenant to Application Insights -->
+        <trace source="token-usage" severity="information">
+            <message>@{
+        var body = context.Response.Body.As<Newtonsoft.Json.Linq.JObject>(true);
+        return new Newtonsoft.Json.Linq.JObject(
+            new Newtonsoft.Json.Linq.JProperty("tenantId",         context.Subscription.Id),
+            new Newtonsoft.Json.Linq.JProperty("tenantName",       context.Subscription.Name),
+            new Newtonsoft.Json.Linq.JProperty("promptTokens",     body?["promptTokens"]),
+            new Newtonsoft.Json.Linq.JProperty("completionTokens", body?["completionTokens"]),
+            new Newtonsoft.Json.Linq.JProperty("totalTokens",      body?["totalTokens"]),
+            new Newtonsoft.Json.Linq.JProperty("cacheHit",         context.Response.Headers.GetValueOrDefault("X-Cache", "MISS")),
+            new Newtonsoft.Json.Linq.JProperty("timestamp",        System.DateTime.UtcNow.ToString("o"))
+        ).ToString();
+        }</message>
+            <metadata name="tenant-id" value="@(context.Subscription.Id)" />
+            <metadata name="cache-hit" value="@(context.Response.Headers.GetValueOrDefault("X-Cache", "MISS"))" />
+        </trace>
+    </outbound>
+    <on-error>
+        <base />
+        <set-header name="X-Error-Source" exists-action="override">
+            <value>APIM</value>
+        </set-header>
+    </on-error>
+</policies>
