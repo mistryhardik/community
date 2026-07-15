@@ -259,3 +259,7 @@ gab/mumbai 2026/terraform/terraform.tfstate
 gab/mumbai 2026/terraform/terraform.tfstate.backup
 gab/.DS_Store
 .DS_Store
+mdca/mdca dotnetdays 12/aiagentapi/aiagentapi/deploy.zip
+mdca/mdca dotnetdays 12/terraform/.terraform/
+mdca/mdca dotnetdays 12/terraform/*.tfstate
+mdca/mdca dotnetdays 12/terraform/*.tfstate.backup

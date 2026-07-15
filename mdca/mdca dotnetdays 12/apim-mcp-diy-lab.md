@@ -1,0 +1,963 @@
+# 🧪 DIY Lab Guide — Model Context Protocol + Azure API Management
+
+**Build an MCP-powered AI Agent · Deploy to Azure · Secure it with APIM**
+
+> **HackerSpace Mumbai · Global Azure 2026 · 18 April 2026 · Microsoft Mumbai**
+> Curated by [Hardik Mistry](https://github.com/mistryhardik), Principal Architect
+
+[![HackerSpace Mumbai](https://img.shields.io/badge/HackerSpace-Mumbai-0078D4?style=flat-square)](https://hackmum.in)
+[![Global Azure 2026](https://img.shields.io/badge/Global_Azure-2026-0078D4?style=flat-square)](https://globalazure.net)
+[![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square)](https://dotnet.microsoft.com)
+[![Azure APIM](https://img.shields.io/badge/Azure-APIM-0078D4?style=flat-square)](https://learn.microsoft.com/azure/api-management)
+
+---
+
+## 📋 Table of Contents
+
+- [Prerequisites](#-prerequisites)
+- [Step 0 — Claim Your Azure Credits](#-step-0--claim-your-azure-credits)
+- [What is MCP?](#-what-is-model-context-protocol-mcp)
+- [Module 0 — Environment Setup](#-module-0--environment-setup-15-min)
+- [Module 1 — Build the MCP Server](#-module-1--build-the-mcp-server-30-min)
+- [Module 2 — Build the AI Agent](#-module-2--build-the-ai-agent-20-min)
+- [Module 3 — Deploy to Azure](#-module-3--deploy-to-azure-20-min)
+- [Module 4 — Configure Azure APIM](#-module-4--configure-azure-api-management-20-min)
+- [Module 5 — Test End-to-End](#-module-5--test-end-to-end-10-min)
+- [Troubleshooting](#-troubleshooting)
+- [Cleanup](#-cleanup)
+- [Resources](#-resources)
+
+---
+
+## ✅ Prerequisites
+
+| Prerequisite | Required | Notes |
+|---|---|---|
+| Azure Subscription | ✅ Required | See Step 0 below — free options available |
+| .NET 8 SDK | ✅ Required | [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download) |
+| VS Code | ✅ Required | [code.visualstudio.com](https://code.visualstudio.com) |
+| Azure CLI | ✅ Required | [aka.ms/installazurecliwindows](https://aka.ms/installazurecliwindows) |
+| Git | ✅ Required | [git-scm.com](https://git-scm.com) |
+| Postman or curl | Recommended | For testing API calls |
+| Prior Azure knowledge | ❌ Not needed | We start from scratch |
+
+---
+
+## 🎟 Step 0 — Claim Your Azure Credits
+
+Before writing a single line of code, you need an Azure subscription. Pick the option that applies to you. All options let you complete this lab at **zero cost**.
+
+---
+
+### Option 1 — HackerSpace Mumbai Event Pass ⭐ Recommended
+
+> If you received an Azure Pass promo code from the HackerSpace Mumbai team today, **use this first**. No credit card required.
+
+1. Open a browser in **incognito / private mode**
+2. Go to **[microsoftazurepass.com](https://www.microsoftazurepass.com)**
+3. Sign in with a **personal Microsoft account** (Outlook / Hotmail) — do NOT use a corporate or college account
+4. Click **"Confirm Microsoft Account"** then enter your promo code exactly as printed
+5. Click **"Claim Promo Code"** → **"Activate"** → wait ~2 minutes for the subscription to appear in [portal.azure.com](https://portal.azure.com)
+
+> ⚠️ Each promo code is **single-use** and tied to one Microsoft account. If activation fails, ensure you are not already using a paid or trial Azure subscription on that account.
+
+---
+
+### Option 2 — Azure for Students 🎓 (No credit card required)
+
+> Full-time students at a college or university get **$100 USD free every year** — renewable annually while enrolled.
+
+| Detail | Value |
+|---|---|
+| Credits | $100 USD |
+| Valid for | 12 months (renewable annually) |
+| Credit card required? | ❌ No |
+| Eligibility | Full-time student with a valid university email |
+| Sign-up URL | [azure.microsoft.com/free/students](https://azure.microsoft.com/free/students) |
+
+**Steps:**
+
+1. Go to **[azure.microsoft.com/free/students](https://azure.microsoft.com/free/students)** (incognito recommended)
+2. Sign in with a **personal Microsoft account** — NOT your college-issued account
+3. Enter your **university email** when prompted for student verification
+4. Complete identity verification — you may need to upload a student ID if your email is not auto-verified
+5. Once verified, credits appear in [portal.azure.com](https://portal.azure.com) → Cost Management within 2–5 minutes
+
+> 💡 **Tip:** Renew every year by revisiting the same URL and re-verifying your student status. Unused credits do not carry over.
+
+---
+
+### Option 3 — Azure Free Trial 🌐 (Non-students, one-time offer)
+
+> **$200 USD** in credits usable within the first 30 days + 12 months of popular services at free tier limits. A card is needed for identity verification only — you will not be charged automatically.
+
+| Detail | Value |
+|---|---|
+| Credits | $200 USD |
+| Valid for | 30 days (credits) + 12 months (free tier services) |
+| Credit card required? | Yes — identity verification only, not charged unless you upgrade |
+| Eligibility | New Azure customers only (one per person) |
+| Sign-up URL | [azure.microsoft.com/free](https://azure.microsoft.com/free) |
+| Also free always | 65+ services with permanent free tiers |
+
+**Steps:**
+
+1. Go to **[azure.microsoft.com/free](https://azure.microsoft.com/free)**
+2. Click **"Start free"** → sign in or create a Microsoft account
+3. Enter your phone number for identity verification
+4. Enter a valid credit or debit card — a temporary $1 hold is placed and immediately reversed
+5. Agree to terms → your $200 credit is available immediately in [portal.azure.com](https://portal.azure.com)
+
+> ⚠️ **Important:** The $200 credit expires after 30 days whether used or not. Do not upgrade to Pay-As-You-Go unless you intend to continue using Azure beyond this lab.
+
+---
+
+### Option 4 — Visual Studio Subscription 💡
+
+Visual Studio Professional subscribers get **$50 USD/month** and Enterprise subscribers get **$150 USD/month** in Azure credits — automatically, every month. Check at [my.visualstudio.com/benefits](https://my.visualstudio.com/benefits) → Azure.
+
+---
+
+### Which option should I choose?
+
+| Who you are | Best option | Credits | Card needed? |
+|---|---|---|---|
+| Received a code from HackerSpace Mumbai today | Option 1 — Event Pass | As allocated | No |
+| Student with a university email | Option 2 — Azure for Students | $100 / year | No |
+| Professional, no existing Azure account | Option 3 — Free Trial | $200 / 30 days | Yes (not charged) |
+| Visual Studio subscriber | Option 4 — VS Subscription | $50–$150 / month | No |
+| Already have an Azure subscription | Use it directly | — | — |
+
+> ⚠️ **Regardless of which option you use:** set a Cost Alert in [portal.azure.com](https://portal.azure.com) → **Cost Management → Budgets → Create**. Set a $10 alert threshold so you get an email before spending any real money.
+
+---
+
+## 🧠 What is Model Context Protocol (MCP)?
+
+MCP is an open standard that defines how AI models connect to external tools and data sources. Think of it like **USB-C for AI** — one standard plug that works with any compatible device.
+
+Before MCP, every AI integration was custom code. MCP standardises that interface so any compatible AI client (Claude, GPT-5.1, etc.) can discover and call any MCP tool server automatically.
+
+### The three pieces of MCP
+
+| Piece | What it is | In this lab |
+|---|---|---|
+| **MCP Server** | Exposes tools and resources the AI can use | .NET 8 API with 3 Azure-aware tools |
+| **MCP Client** | The AI model that discovers and calls tools | GPT-5.1 via Azure OpenAI function calling |
+| **MCP Transport** | How client and server communicate | HTTP/SSE (Server-Sent Events) |
+
+### Why MCP + APIM?
+
+- Your AI agent calls real Azure tools without custom middleware for each one
+- Tools are self-describing — the AI reads the definition and knows how to call it
+- APIM sits on top to rate-limit, cache, and secure the entire MCP surface area
+- One APIM policy file governs the agent + all its tools — no per-tool auth code
+
+### What you will build
+
+| Layer | Technology | Purpose |
+|---|---|---|
+| MCP Server | .NET 8 + ModelContextProtocol SDK | Exposes 3 tools: cost calculator, quota checker, service health |
+| AI Agent | .NET 8 + Azure OpenAI SDK | Accepts chat, calls MCP tools, returns answers |
+| Gateway | Azure API Management | Rate limiting, caching, auth, token metering |
+| Observability | Azure Application Insights | Per-tenant token usage and cache hit tracking |
+
+> ⚠️ **APIM takes 30–45 minutes to provision.** Start Module 3 Step 1 before writing any code.
+
+---
+
+## ⚙️ Module 0 — Environment Setup (15 min)
+
+### Verify .NET 8
+
+```bash
+dotnet --version
+# Expected: 8.x.x
+```
+
+### Verify Azure CLI
+
+```bash
+az --version
+# Expected: azure-cli 2.x.x
+
+# Install if missing:
+# Windows: winget install Microsoft.AzureCLI
+# macOS:   brew install azure-cli
+# Linux:   curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+### Install VS Code extensions
+
+Open VS Code → Extensions (`Ctrl+Shift+X`) and install:
+
+- **Azure App Service** (Microsoft)
+- **C#** (Microsoft)
+- **REST Client** (Humao) — for testing without Postman
+
+### Log in to Azure
+
+```bash
+az login
+# A browser window opens — sign in with your Azure account
+
+# Verify the correct subscription is active
+az account show --query '{name:name, id:id}' -o table
+
+# If you have multiple subscriptions, set the active one:
+az account set --subscription "YOUR_SUBSCRIPTION_NAME"
+```
+
+### Create the Resource Group
+
+```bash
+az group create \
+  --name rg-mcp-demo \
+  --location eastus
+
+# Expected: { "properties": { "provisioningState": "Succeeded" } }
+```
+
+> 💡 East US has the best GPT-5.1 availability. If you are in India, also try `eastus2` or `swedencentral`.
+
+---
+
+## 🛠 Module 1 — Build the MCP Server (30 min)
+
+The MCP Server is a .NET 8 Web API that exposes tools the AI agent can call. It exposes three tools relevant to Azure cost and quota management.
+
+### Step 1 — Scaffold the project
+
+```bash
+mkdir McpAzureServer && cd McpAzureServer
+dotnet new webapi -n McpAzureServer --framework net8.0
+cd McpAzureServer
+
+dotnet add package ModelContextProtocol --version 0.1.0-preview.10
+dotnet add package ModelContextProtocol.AspNetCore --version 0.1.0-preview.10
+dotnet add package Microsoft.ApplicationInsights.AspNetCore
+```
+
+> 📝 `ModelContextProtocol` is the official .NET MCP SDK maintained by Microsoft.
+
+### Step 2 — Define the MCP Tools
+
+Create `AzureTools.cs` in the project root:
+
+```csharp
+// AzureTools.cs
+using ModelContextProtocol.Server;
+using System.ComponentModel;
+
+namespace McpAzureServer;
+
+[McpServerToolType]
+public static class AzureTools
+{
+    [McpServerTool, Description("Calculates the estimated Azure OpenAI cost given token usage. " +
+        "Provide promptTokens and completionTokens. Returns cost in USD.")]
+    public static string CalculateTokenCost(
+        [Description("Number of prompt/input tokens")] int promptTokens,
+        [Description("Number of completion/output tokens")] int completionTokens,
+        [Description("Model name: gpt-5.1 or gpt-5.1-mini")] string model = "gpt-5.1")
+    {
+        // Pricing as of April 2026 (per 1K tokens)
+        var (inputRate, outputRate) = model.ToLower() switch {
+          "gpt-5.1-mini" => (0.00015, 0.0006),
+            _             => (0.0025,  0.01),
+        };
+
+        var cost = (promptTokens / 1000.0 * inputRate)
+                 + (completionTokens / 1000.0 * outputRate);
+
+        return $"""
+        Model: {model}
+        Prompt tokens:     {promptTokens:N0}  @ ${inputRate}/1K = ${promptTokens / 1000.0 * inputRate:F6}
+        Completion tokens: {completionTokens:N0} @ ${outputRate}/1K = ${completionTokens / 1000.0 * outputRate:F6}
+        Total estimated cost: ${cost:F6} USD
+        Tip: Switch to gpt-5.1-mini for ~15x cost reduction on the same task.
+        """;
+    }
+
+    [McpServerTool, Description("Returns the current API quota and rate limit status for a tenant. " +
+        "Provide the tenantId (subscription key prefix).")]
+    public static string GetQuotaStatus(
+        [Description("Tenant identifier or subscription key prefix")] string tenantId)
+    {
+        // Simulated quota data — replace with real APIM Management API call in production
+        var random = new Random(tenantId.GetHashCode());
+        var callsUsed  = random.Next(5, 20);
+        var tokensUsed = random.Next(5000, 45000);
+
+        return $"""
+        Tenant: {tenantId}
+        Rate limit:   {callsUsed}/20 calls used in current 60-second window
+        Token quota:  {tokensUsed:N0}/50,000 tokens used today
+        Cache hits:   {random.Next(10, 60)}% of requests served from cache
+        Status:       {(callsUsed >= 18 ? "WARNING: approaching rate limit" : "Healthy")}
+        """;
+    }
+
+    [McpServerTool, Description("Returns the health status of key Azure AI services. " +
+        "Checks Azure OpenAI, APIM, and App Service availability.")]
+    public static async Task<string> GetAzureServiceHealth()
+    {
+        await Task.Delay(50); // simulate async API call
+
+        return $"""
+        Azure Service Health Report (simulated)
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Azure OpenAI (East US):     ✅ Available
+        Azure API Management:       ✅ Available
+        Azure App Service:          ✅ Available
+        Application Insights:       ✅ Available
+
+        Last checked: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC
+        Note: Visit status.azure.com for real-time status.
+        """;
+    }
+}
+```
+
+### Step 3 — Wire up Program.cs
+
+Replace the entire contents of `Program.cs`:
+
+```csharp
+// Program.cs
+using McpAzureServer;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApplicationInsightsTelemetry();
+
+// Register MCP Server with SSE transport
+builder.Services
+    .AddMcpServer()
+    .WithHttpTransport()        // SSE over HTTP
+    .WithToolsFromAssembly();   // Auto-discover [McpServerTool] methods
+
+var app = builder.Build();
+
+app.MapGet("/health", () => Results.Ok(new {
+    status    = "healthy",
+    service   = "MCP Azure Server",
+    tools     = new[] { "CalculateTokenCost", "GetQuotaStatus", "GetAzureServiceHealth" },
+    timestamp = DateTime.UtcNow
+}));
+
+app.MapMcp(); // registers MCP SSE routes
+
+app.Run();
+```
+
+### Step 4 — Test locally
+
+```bash
+dotnet run
+# Server starts on https://localhost:5001
+
+# In a second terminal:
+curl https://localhost:5001/health
+# Expected: { "status": "healthy", "service": "MCP Azure Server", "tools": [...] }
+```
+
+> 💡 Keep this terminal running. Open a new terminal for Module 2.
+
+---
+
+## 🤖 Module 2 — Build the AI Agent (20 min)
+
+The AI Agent accepts chat messages, connects to GPT-5.1 on Azure OpenAI, and calls your MCP Server tools when needed.
+
+### Step 1 — Provision Azure OpenAI (Portal)
+
+1. Go to [portal.azure.com](https://portal.azure.com) → search **"Azure OpenAI"** → **Create**
+2. Resource group: `rg-mcp-demo` | Region: `East US` | Name: `openai-mcp-demo` | Tier: `Standard S0`
+3. After creation → **Go to Azure OpenAI Studio** → **Deployments** → **Deploy base model**
+4. Deploy **gpt-5.1** → Deployment name: `gpt-5.1-demo` | TPM: `10K`
+5. Deploy **gpt-5.1-mini** → Deployment name: `gpt-5.1-mini-demo` | TPM: `10K`
+6. Back in Portal → **Keys and Endpoint** → copy **KEY 1** and **Endpoint URL**
+
+### Step 2 — Scaffold the Agent project
+
+```bash
+# Open a NEW terminal in a DIFFERENT folder (not inside McpAzureServer)
+cd ..
+mkdir McpAiAgent && cd McpAiAgent
+dotnet new webapi -n McpAiAgent --framework net8.0
+cd McpAiAgent
+
+dotnet add package Azure.AI.OpenAI --version 2.1.0
+dotnet add package ModelContextProtocol --version 0.1.0-preview.10
+dotnet add package Microsoft.ApplicationInsights.AspNetCore
+```
+
+### Step 3 — Create McpClientService.cs
+
+```csharp
+// McpClientService.cs
+using ModelContextProtocol.Client;
+using ModelContextProtocol.Protocol.Transport;
+using OpenAI.Chat;
+using System.Text.Json;
+
+namespace McpAiAgent;
+
+public class McpClientService
+{
+    private readonly string _mcpServerUrl;
+
+    public McpClientService(IConfiguration config)
+    {
+        _mcpServerUrl = config["McpServer:Url"]!;
+    }
+
+    // Connect to MCP Server and fetch tool definitions as OpenAI function tools
+    public async Task<List<ChatTool>> GetToolsAsOpenAIFunctionsAsync()
+    {
+        await using var client = await CreateClientAsync();
+        var tools = await client.ListToolsAsync();
+
+        return tools.Select(t => ChatTool.CreateFunctionTool(
+            functionName: t.Name,
+            functionDescription: t.Description,
+            functionParameters: t.InputSchema != null
+                ? BinaryData.FromString(t.InputSchema.ToString()!)
+                : BinaryData.FromString("{\"type\":\"object\",\"properties\":{}}")
+        )).ToList();
+    }
+
+    // Execute a tool call on the MCP Server
+    public async Task<string> CallToolAsync(string toolName, string argumentsJson)
+    {
+        await using var client = await CreateClientAsync();
+        var args = JsonSerializer.Deserialize<Dictionary<string, object?>>(argumentsJson)
+                   ?? new();
+        var result = await client.CallToolAsync(toolName, args);
+        return string.Join("\n", result.Content.Select(c => c.Text ?? ""));
+    }
+
+    private async Task<IMcpClient> CreateClientAsync()
+    {
+        var transport = new SseClientTransport(
+            new SseClientTransportOptions { Endpoint = new Uri(_mcpServerUrl + "/sse") });
+        return await McpClientFactory.CreateAsync(transport);
+    }
+}
+```
+
+### Step 4 — Create Program.cs
+
+```csharp
+// Program.cs
+using Azure;
+using Azure.AI.OpenAI;
+using McpAiAgent;
+using OpenAI.Chat;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddSingleton<McpClientService>();
+builder.Services.AddSingleton(_ => new AzureOpenAIClient(
+    new Uri(builder.Configuration["AzureOpenAI:Endpoint"]!),
+    new AzureKeyCredential(builder.Configuration["AzureOpenAI:Key"]!)));
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", service = "MCP AI Agent" }));
+
+app.MapPost("/api/chat", async (ChatRequest req, AzureOpenAIClient aiClient, McpClientService mcp) =>
+{
+    if (string.IsNullOrWhiteSpace(req.Message))
+        return Results.BadRequest(new { error = "Message cannot be empty." });
+
+    var deployment = req.Model ?? builder.Configuration["AzureOpenAI:DeploymentName"]!;
+    var chatClient = aiClient.GetChatClient(deployment);
+
+    // Fetch available MCP tools and convert to OpenAI function format
+    var tools = await mcp.GetToolsAsOpenAIFunctionsAsync();
+
+    var systemPrompt = req.SystemPrompt ??
+        "You are a concise Azure technical assistant. " +
+        "Use the available tools when the user asks about costs, quotas, or service health. " +
+        "Answer in 2-3 sentences. No bullet points unless asked.";
+
+    var messages = new List<ChatMessage>
+    {
+        new SystemChatMessage(systemPrompt),
+        new UserChatMessage(req.Message)
+    };
+
+    var options = new ChatCompletionOptions();
+    foreach (var t in tools) options.Tools.Add(t);
+
+    // Agentic loop — keep going until no more tool calls
+    ChatCompletion response;
+    var toolCallLog = new List<string>();
+
+    while (true)
+    {
+        response = await chatClient.CompleteChatAsync(messages, options);
+
+        if (response.FinishReason == ChatFinishReason.ToolCalls)
+        {
+            messages.Add(new AssistantChatMessage(response));
+            foreach (var call in response.ToolCalls)
+            {
+                toolCallLog.Add($"{call.FunctionName}({call.FunctionArguments})");
+                var result = await mcp.CallToolAsync(
+                    call.FunctionName, call.FunctionArguments.ToString());
+                messages.Add(new ToolChatMessage(call.Id, result));
+            }
+        }
+        else break; // final answer ready
+    }
+
+    return Results.Ok(new ChatResponse(
+        Reply:            response.Content[0].Text,
+        Model:            deployment,
+        ToolsCalled:      toolCallLog,
+        PromptTokens:     response.Usage.InputTokenCount,
+        CompletionTokens: response.Usage.OutputTokenCount,
+        TotalTokens:      response.Usage.TotalTokenCount
+    ));
+})
+.WithName("Chat")
+.WithOpenApi();
+
+app.Run();
+
+record ChatRequest(string Message, string? Model = null, string? SystemPrompt = null);
+record ChatResponse(string Reply, string Model, List<string> ToolsCalled,
+    int PromptTokens, int CompletionTokens, int TotalTokens);
+```
+
+### Step 5 — Configure appsettings.json
+
+```json
+{
+  "AzureOpenAI": {
+    "Endpoint": "https://openai-mcp-demo.openai.azure.com/",
+    "Key": "YOUR_AZURE_OPENAI_KEY_1",
+    "DeploymentName": "gpt-5.1-demo"
+  },
+  "McpServer": {
+    "Url": "https://localhost:5001"
+  },
+  "ApplicationInsights": {
+    "ConnectionString": "YOUR_APP_INSIGHTS_CONNECTION_STRING"
+  },
+  "AllowedHosts": "*"
+}
+```
+
+### Step 6 — Test locally
+
+With the MCP Server still running in the first terminal:
+
+```bash
+# Start the agent (in McpAiAgent folder)
+dotnet run
+
+# Test plain chat (no tool)
+curl -X POST https://localhost:5002/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is Azure APIM?"}'
+
+# Test tool-calling (should trigger CalculateTokenCost)
+curl -X POST https://localhost:5002/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "I used 500 prompt tokens and 300 completion tokens with gpt-5.1. What did that cost?"}'
+# Expected response: toolsCalled includes "CalculateTokenCost(...)"
+```
+
+> 💡 When `toolsCalled` is non-empty in the response, the AI successfully invoked your MCP Server — that's MCP working end-to-end.
+
+---
+
+## ☁️ Module 3 — Deploy to Azure (20 min)
+
+### Step 1 — Start APIM provisioning NOW ⚠️
+
+> Do this **before anything else**. APIM takes 30–45 minutes and you need it ready for Module 4.
+
+1. [portal.azure.com](https://portal.azure.com) → search **"API Management services"** → **Create**
+2. Resource group: `rg-mcp-demo` | Name: `apim-mcp-demo` | Region: `East US`
+3. Organization name: `Demo Org` | Admin email: your email
+4. Pricing tier: **Developer (No SLA)** ← cheapest, fine for demos
+5. **Review + Create → Create** — then continue with Step 2 while it deploys
+
+### Step 2 — Create Application Insights
+
+```bash
+az monitor app-insights component create \
+  --app appinsights-mcp-demo \
+  --location eastus \
+  --resource-group rg-mcp-demo \
+  --kind web
+
+# Copy the connectionString from the output
+```
+
+### Step 3 — Create App Service plan and Web Apps
+
+```bash
+# Shared App Service Plan
+az appservice plan create \
+  --name plan-mcp-demo \
+  --resource-group rg-mcp-demo \
+  --sku B1 \
+  --is-linux false
+
+# MCP Server Web App
+az webapp create \
+  --name mcp-server-demo \
+  --resource-group rg-mcp-demo \
+  --plan plan-mcp-demo \
+  --runtime "dotnet:8"
+
+# AI Agent Web App
+az webapp create \
+  --name mcp-agent-demo \
+  --resource-group rg-mcp-demo \
+  --plan plan-mcp-demo \
+  --runtime "dotnet:8"
+```
+
+### Step 4 — Set Application Settings
+
+```bash
+# MCP Server
+az webapp config appsettings set \
+  --name mcp-server-demo \
+  --resource-group rg-mcp-demo \
+  --settings \
+  ApplicationInsights__ConnectionString="YOUR_APPINSIGHTS_CONNECTION_STRING"
+
+# AI Agent
+az webapp config appsettings set \
+  --name mcp-agent-demo \
+  --resource-group rg-mcp-demo \
+  --settings \
+  AzureOpenAI__Endpoint="https://openai-mcp-demo.openai.azure.com/" \
+  AzureOpenAI__Key="YOUR_OPENAI_KEY" \
+  AzureOpenAI__DeploymentName="gpt-5.1-demo" \
+  McpServer__Url="https://mcp-server-demo.azurewebsites.net" \
+  ApplicationInsights__ConnectionString="YOUR_APPINSIGHTS_CONNECTION_STRING"
+```
+
+### Step 5 — Deploy via VS Code
+
+1. Open VS Code → **Azure sidebar** (Azure icon in left panel)
+2. Expand your subscription → **App Services → `mcp-server-demo`** → right-click → **Deploy to Web App** → select `McpAzureServer` folder → confirm
+3. Repeat for **`mcp-agent-demo`** → select `McpAiAgent` folder
+
+Or via CLI from each project folder:
+
+```bash
+# From McpAzureServer/
+dotnet publish -c Release -o ./publish
+cd publish && zip -r ../deploy.zip . && cd ..
+az webapp deploy --name mcp-server-demo --resource-group rg-mcp-demo --src-path deploy.zip
+
+# From McpAiAgent/
+dotnet publish -c Release -o ./publish
+cd publish && zip -r ../deploy.zip . && cd ..
+az webapp deploy --name mcp-agent-demo --resource-group rg-mcp-demo --src-path deploy.zip
+```
+
+### Step 6 — Verify deployments
+
+```bash
+curl https://mcp-server-demo.azurewebsites.net/health
+curl https://mcp-agent-demo.azurewebsites.net/health
+
+# End-to-end test (cloud to cloud)
+curl -X POST https://mcp-agent-demo.azurewebsites.net/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Check Azure service health for me"}'
+```
+
+---
+
+## 🔒 Module 4 — Configure Azure API Management (20 min)
+
+By now APIM should have a green tick in the Portal.
+
+### Step 1 — Import the AI Agent API
+
+1. Portal → `apim-mcp-demo` → **APIs** → **Add API** → **HTTP**
+2. Display name: `MCP AI Agent` | Name: `mcp-ai-agent`
+3. Web service URL: `https://mcp-agent-demo.azurewebsites.net`
+4. API URL suffix: `agent` → **Create**
+5. **+ Add operation** → Display name: `Chat` | Method: `POST` | URL: `/api/chat` → **Save**
+
+### Step 2 — Connect Application Insights
+
+1. APIM → left sidebar → **Monitoring → Application Insights** → **+ Add**
+2. Select `appinsights-mcp-demo` | Sampling: `100%` → **Create**
+
+### Step 3 — Create Products and Subscriptions
+
+**Create a Product:**
+1. APIM → **Products** → **+ Add** → Name: `Standard` | Display name: `Standard Tier`
+2. Check: **Requires subscription** | **Published** → **Create**
+3. Click the Standard product → **APIs** → **+ Add** → select **MCP AI Agent**
+
+**Create two tenant subscriptions:**
+1. APIM → **Subscriptions** → **+ Add** → Name: `Tenant-A` | Scope: Product → Standard → **Create**
+2. Repeat for `Tenant-B`
+3. Copy both **Primary Keys** — these are the demo tenant keys used in Module 5
+
+### Step 4 — Apply the APIM Policy
+
+Go to: **APIM → APIs → MCP AI Agent → All operations → `</>` (Policies)**. Replace the entire XML:
+
+```xml
+<policies>
+  <inbound>
+    <base />
+
+    <!-- 1. Require subscription key -->
+    <check-header name="Ocp-Apim-Subscription-Key"
+      failed-check-httpcode="401"
+      failed-check-error-message="Missing subscription key."
+      ignore-case="false" />
+
+    <!-- 2. Per-tenant rate limit: 20 calls per 60 seconds -->
+    <rate-limit-by-key
+      calls="20"
+      renewal-period="60"
+      counter-key="@(context.Subscription.Id)"
+      remaining-calls-header-name="X-RateLimit-Remaining"
+      remaining-calls-variable-name="remainingCalls"
+      retry-after-header-name="Retry-After" />
+
+    <!-- 3. Cache lookup: keyed on request body hash -->
+    <cache-lookup-value
+      key="@(&quot;mcp-&quot; + context.Request.Body.As<string>(true).GetHashCode())"
+      variable-name="cachedResponse" />
+    <choose>
+      <when condition="@(context.Variables.ContainsKey(&quot;cachedResponse&quot;))">
+        <return-response>
+          <set-status code="200" reason="OK" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-header name="X-Cache" exists-action="override">
+            <value>HIT</value>
+          </set-header>
+          <set-body>@((string)context.Variables[&quot;cachedResponse&quot;])</set-body>
+        </return-response>
+      </when>
+    </choose>
+
+    <!-- 4. Mark cache miss -->
+    <set-header name="X-Cache" exists-action="override">
+      <value>MISS</value>
+    </set-header>
+
+    <!-- 5. Enforce optimised system prompt at gateway -->
+    <set-body>@{
+      var body = context.Request.Body
+                   .As<Newtonsoft.Json.Linq.JObject>(true);
+      if (body["systemPrompt"] == null)
+        body["systemPrompt"] = "You are a concise Azure technical assistant. "
+          + "Use available tools when asked about costs, quotas, or service health. "
+          + "Answer in 2-3 plain sentences. No bullet points unless asked.";
+      return body.ToString();
+    }</set-body>
+
+    <set-backend-service base-url="https://mcp-agent-demo.azurewebsites.net" />
+  </inbound>
+
+  <backend><base /></backend>
+
+  <outbound>
+    <base />
+
+    <!-- 6. Cache response for 5 minutes -->
+    <cache-store-value
+      key="@(&quot;mcp-&quot; + context.Request.Body.As<string>(true).GetHashCode())"
+      value="@(context.Response.Body.As<string>(true))"
+      duration="300" />
+
+    <!-- 7. Emit token usage trace to Application Insights -->
+    <trace source="mcp-token-usage" severity="information">
+      <message>@{
+        var body = context.Response.Body
+          .As<Newtonsoft.Json.Linq.JObject>(true);
+        return new Newtonsoft.Json.Linq.JObject(
+          new Newtonsoft.Json.Linq.JProperty("tenantId",    context.Subscription.Id),
+          new Newtonsoft.Json.Linq.JProperty("tenantName",  context.Subscription.Name),
+          new Newtonsoft.Json.Linq.JProperty("totalTokens", body?["totalTokens"]),
+          new Newtonsoft.Json.Linq.JProperty("toolsCalled", body?["toolsCalled"]),
+          new Newtonsoft.Json.Linq.JProperty("cacheHit",    context.Response.Headers.GetValueOrDefault("X-Cache", "MISS")),
+          new Newtonsoft.Json.Linq.JProperty("model",       body?["model"]),
+          new Newtonsoft.Json.Linq.JProperty("timestamp",   System.DateTime.UtcNow.ToString("o"))
+        ).ToString();
+      }</message>
+      <metadata name="tenant" value="@(context.Subscription.Name)" />
+      <metadata name="cache"  value="@(context.Response.Headers.GetValueOrDefault(&quot;X-Cache&quot;,&quot;MISS&quot;))" />
+    </trace>
+  </outbound>
+
+  <on-error>
+    <base />
+    <set-header name="X-Error-Source" exists-action="override">
+      <value>APIM</value>
+    </set-header>
+  </on-error>
+</policies>
+```
+
+Click **Save**. If you see a logger error, ensure Application Insights was connected in Step 2 first.
+
+---
+
+## 🧪 Module 5 — Test End-to-End (10 min)
+
+Get your APIM Gateway URL from: Portal → `apim-mcp-demo` → **Overview** → **Gateway URL**
+It looks like: `https://apim-mcp-demo.azure-api.net`
+
+### Test 1 — Basic chat (no tool calling)
+
+```bash
+curl -X POST https://apim-mcp-demo.azure-api.net/agent/api/chat \
+  -H "Content-Type: application/json" \
+  -H "Ocp-Apim-Subscription-Key: TENANT_A_KEY" \
+  -d '{"message": "What is Azure API Management?"}'
+
+# Response headers to check:
+# X-Cache: MISS  (first call)
+# X-RateLimit-Remaining: 19
+```
+
+### Test 2 — MCP tool calling through APIM
+
+```bash
+curl -X POST https://apim-mcp-demo.azure-api.net/agent/api/chat \
+  -H "Content-Type: application/json" \
+  -H "Ocp-Apim-Subscription-Key: TENANT_A_KEY" \
+  -d '{"message": "I used 1000 prompt tokens and 500 completion tokens with gpt-5.1. How much did that cost?"}'
+
+# Expected: toolsCalled includes "CalculateTokenCost(...)"
+```
+
+### Test 3 — Response caching
+
+```bash
+# Run the EXACT same request twice:
+curl -X POST https://apim-mcp-demo.azure-api.net/agent/api/chat \
+  -H "Content-Type: application/json" \
+  -H "Ocp-Apim-Subscription-Key: TENANT_A_KEY" \
+  -d '{"message": "Check Azure service health for me"}'
+
+# First call:  X-Cache: MISS  | ~2000ms | tokens consumed
+# Second call: X-Cache: HIT   | ~20ms   | zero tokens consumed
+```
+
+### Test 4 — Per-tenant rate limiting
+
+```bash
+# Blast 25 calls as Tenant A:
+for i in {1..25}; do
+  curl -s -o /dev/null -w "Call $i: HTTP %{http_code}\n" \
+    -X POST https://apim-mcp-demo.azure-api.net/agent/api/chat \
+    -H "Content-Type: application/json" \
+    -H "Ocp-Apim-Subscription-Key: TENANT_A_KEY" \
+    -d '{"message": "Hello"}'
+done
+# Calls 1-20:  HTTP 200
+# Calls 21-25: HTTP 429 Too Many Requests
+
+# While Tenant A is throttled, Tenant B still works:
+curl -X POST https://apim-mcp-demo.azure-api.net/agent/api/chat \
+  -H "Content-Type: application/json" \
+  -H "Ocp-Apim-Subscription-Key: TENANT_B_KEY" \
+  -d '{"message": "Hello from Tenant B"}'
+# Returns: HTTP 200 — completely unaffected
+```
+
+### View telemetry in Application Insights
+
+```kql
+// Paste into Application Insights → Logs
+traces
+| where timestamp > ago(1h)
+| where customDimensions["Source"] == "mcp-token-usage"
+| extend data = parse_json(message)
+| project
+    timestamp,
+    tenant      = tostring(data.tenantName),
+    totalTokens = toint(data.totalTokens),
+    toolsCalled = tostring(data.toolsCalled),
+    cacheHit    = tostring(data.cacheHit),
+    model       = tostring(data.model)
+| order by timestamp desc
+```
+
+---
+
+## 🔧 Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| MCP Server health returns 404 | App not started or wrong port | Check `dotnet run` output for actual port; verify deployment |
+| `toolsCalled` is empty in response | MCP client cannot reach MCP Server | Check `McpServer__Url` in agent app settings |
+| APIM returns 401 Unauthorized | Missing or wrong subscription key | Copy key from APIM → Subscriptions → show keys |
+| APIM policy save fails (logger error) | App Insights not connected to APIM | APIM → Monitoring → Application Insights → Add instance first |
+| Azure OpenAI returns 429 | Token quota exhausted | Increase TPM in Azure OpenAI Studio → Deployments |
+| App Service returns 502 | App crashed on startup | App Service → Log stream → check for missing config values |
+| Cache always returns MISS | Request body differs slightly | Ensure the message field is identical including whitespace |
+| MCP tools not discovered | Assembly not scanned | Verify `WithToolsFromAssembly()` in Program.cs; rebuild and redeploy |
+
+---
+
+## 🗑 Cleanup
+
+When done, delete everything in one command:
+
+```bash
+az group delete --name rg-mcp-demo --yes --no-wait
+
+# --no-wait returns immediately; deletion runs in the background (~5 minutes)
+# Verify in Portal → Resource groups → rg-mcp-demo should disappear
+```
+
+> ⚠️ The Developer tier APIM instance costs ~$50/month. Don't forget to clean up if you are on a paid subscription.
+
+---
+
+## 📚 Resources
+
+| Resource | Link |
+|---|---|
+| Lab demo repo (this lab) | [github.com/mistryhardik/community](https://github.com/mistryhardik/community) |
+| MCP .NET SDK (official) | [github.com/modelcontextprotocol/csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk) |
+| Azure API Management docs | [learn.microsoft.com/azure/api-management](https://learn.microsoft.com/azure/api-management) |
+| Azure OpenAI docs | [learn.microsoft.com/azure/ai-services/openai](https://learn.microsoft.com/azure/ai-services/openai) |
+| APIM AI Gateway policies | [aka.ms/apim-ai-gateway](https://aka.ms/apim-ai-gateway) |
+| Azure Architecture Center | [learn.microsoft.com/azure/architecture](https://learn.microsoft.com/azure/architecture) |
+| HackerSpace Mumbai | [hackmum.in](https://hackmum.in) · [#mumtechup](https://www.meetup.com/mumbai-technology-meetup/) |
+| Global Azure 2026 | [globalazure.net](https://globalazure.net) · #GlobalAzure2026 |
+
+### What to explore next
+
+- Replace the simulated `GetAzureServiceHealth` with a real [Azure Resource Health REST API](https://learn.microsoft.com/rest/api/resourcehealth/) call
+- Swap SSE transport for Stdio transport for local CLI-based MCP clients
+- Add semantic caching in APIM using Azure AI Search for similar prompt matching
+- Wire up the APIM Management REST API to return real quota data in `GetQuotaStatus`
+- Add Managed Identity to remove hardcoded keys from `appsettings.json`
+
+---
+
+**Happy building! 🚀**
+
+*Hardik Mistry · Principal Architect*
+`#mumtechup` `#GlobalAzure2026` `#GlobalAzure` `#AzureAPIM` `#dotnet` `#MicrosoftAzure`
