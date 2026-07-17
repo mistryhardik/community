@@ -23,6 +23,9 @@ environment    = "dev"
 location       = "eastus"
 location_short = "eus"
 
+# Static Web App is not available in all regions (for example, eastus is not supported).
+static_web_app_location = "eastus2"
+
 # ── App Service ───────────────────────────────────────────────────────────────
 app_service_sku = "B1"        # B1 = ~$13/month. F1 = free but cold starts.
 

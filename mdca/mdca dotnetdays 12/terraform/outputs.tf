@@ -59,6 +59,19 @@ output "ai_agent_swagger_url" {
   value       = "https://${azurerm_windows_web_app.ai_agent.default_hostname}/swagger"
 }
 
+# ── Static Web App ────────────────────────────────────────────────────────────
+
+output "frontend_url" {
+  description = "Static Web App URL for the workshop frontend."
+  value       = "https://${azurerm_static_web_app.frontend.default_host_name}"
+}
+
+output "frontend_deployment_token" {
+  description = "Deployment token for GitHub Actions. Store this as the AZURE_STATIC_WEB_APPS_API_TOKEN secret."
+  value       = azurerm_static_web_app.frontend.api_key
+  sensitive   = true
+}
+
 # ── Monitoring ────────────────────────────────────────────────────────────────
 
 output "app_insights_connection_string" {

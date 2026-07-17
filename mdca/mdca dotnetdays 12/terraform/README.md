@@ -13,6 +13,7 @@ This folder contains Terraform configuration to provision every Azure resource n
 | App Service Plan | `asp-<suffix>` | Shared compute for both apps |
 | App Service — MCP Server | `app-mcpsrv-<suffix>` | Hosts your MCP tool server |
 | App Service — AI Agent | `app-aiagent-<suffix>` | Hosts your .NET AI agent |
+| Static Web App | `swa-<suffix>` | Hosts the workshop frontend from the `app/` folder |
 | API Management | `apim-<suffix>` | Rate limiting, caching, auth, tracing |
 | APIM Product | `standard` | Access tier that subscriptions are linked to |
 | APIM Subscriptions | one per tenant | Individual API keys per tenant |
@@ -29,6 +30,7 @@ terraform/
 ├── monitoring.tf             # Log Analytics Workspace + Application Insights
 ├── openai.tf                 # Azure OpenAI + GPT-4o + GPT-4o-mini deployments
 ├── app_service.tf            # App Service Plan + MCP Server + AI Agent web apps
+├── static_web_app.tf         # Azure Static Web App for the frontend
 ├── apim.tf                   # Full APIM: service, logger, API, policy, product, subscriptions
 ├── terraform.tfvars.example  # Copy this to terraform.tfvars and fill in your values
 └── README.md                 # This file
@@ -86,6 +88,8 @@ terraform output
 terraform output openai_key
 terraform output -json tenant_subscription_keys
 terraform output app_insights_connection_string
+terraform output -raw frontend_url
+terraform output frontend_deployment_token
 ```
 
 ## Deploy your code
@@ -112,6 +116,19 @@ az webapp deploy \
 
 Or use the VS Code Azure App Service extension: right-click the app → Deploy to Web App.
 
+For the static frontend (`app/`), deploy using Azure Static Web Apps + GitHub Actions:
+
+```bash
+# 1) Get the SWA URL
+terraform output -raw frontend_url
+
+# 2) Get the SWA deployment token and add it to GitHub repo secrets
+#    Secret name: AZURE_STATIC_WEB_APPS_API_TOKEN
+terraform output -raw frontend_deployment_token
+```
+
+Then push the workflow at `.github/workflows/deploy-static-web-app.yml` and your `app/` content.
+
 ## Key variables to customise
 
 | Variable | Default | When to change |
@@ -119,6 +136,7 @@ Or use the VS Code Azure App Service extension: right-click the app → Deploy t
 | `project_name` | `aiagent` | Change to your name/team to avoid name collisions |
 | `environment` | `dev` | Change to `test` or `prod` for other environments |
 | `location` | `eastus` | Change if you need a different Azure region |
+| `static_web_app_location` | `eastus2` | Static Web App region. Must be one of centralus/eastus2/westus2/westeurope/eastasia |
 | `apim_sku` | `Developer_1` | Use `Basic_1` for an SLA-backed environment |
 | `app_service_sku` | `B1` | Use `F1` for free tier (cold starts, no always-on) |
 | `apim_rate_limit_calls` | `20` | Calls per tenant per window |

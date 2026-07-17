@@ -46,6 +46,23 @@ variable "location_short" {
   default     = "eus"
 }
 
+variable "static_web_app_location" {
+  type        = string
+  description = "Azure region for Static Web App. Must be one of: centralus, eastus2, westus2, westeurope, eastasia."
+  default     = "eastus2"
+
+  validation {
+    condition = contains([
+      "centralus",
+      "eastus2",
+      "westus2",
+      "westeurope",
+      "eastasia",
+    ], lower(var.static_web_app_location))
+    error_message = "static_web_app_location must be one of: centralus, eastus2, westus2, westeurope, eastasia."
+  }
+}
+
 # ── Tags ──────────────────────────────────────────────────────────────────────
 
 variable "tags" {

@@ -194,6 +194,24 @@ resource "azurerm_api_management_api_policy" "ai_agent" {
 <policies>
     <inbound>
         <base />
+        <cors allow-credentials="false">
+            <allowed-origins>
+                <origin>*</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>GET</method>
+                <method>POST</method>
+                <method>OPTIONS</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+            <expose-headers>
+                <header>X-Cache</header>
+                <header>X-RateLimit-Remaining</header>
+                <header>Retry-After</header>
+            </expose-headers>
+        </cors>
         <!-- 1. Validate subscription key is present -->
         <check-header name="Ocp-Apim-Subscription-Key" failed-check-httpcode="401" failed-check-error-message="Missing subscription key" ignore-case="false" />
         <!-- 2. Per-tenant rate limiting: 20 calls per 60 seconds -->
@@ -201,12 +219,12 @@ resource "azurerm_api_management_api_policy" "ai_agent" {
         <!-- Bonus: Enforce model and system prompt at gateway — tenants cannot override -->
         <!--<set-body>@{
             var body = context.Request.Body.As<Newtonsoft.Json.Linq.JObject>(true);
-            body["model"] = "gpt-4o-mini";
+            body["model"] = "gpt-5.1";
             body["systemPrompt"] = "You are a dotnet principal engineer. Answer in 2-3 plain sentences maximum. No bullet points, no headers, no examples unless asked.";
             return body.ToString();
         }</set-body>-->
         <!-- 3. Response caching: cache by message body for 5 minutes -->
-        <cache-lookup-value key="@("chat-" + context.Request.Body.As<string>(true).GetHashCode())" variable-name="cachedResponse" />
+        <cache-lookup-value key="@("chat-" + context.Request.Headers.GetValueOrDefault("X-Participant-Name","mdca") + "-" + context.Request.Body.As<string>(true).GetHashCode())" variable-name="cachedResponse" />
         <choose>
             <when condition="@(context.Variables.ContainsKey("cachedResponse"))">
                 <return-response>
@@ -234,23 +252,25 @@ resource "azurerm_api_management_api_policy" "ai_agent" {
     <outbound>
         <base />
         <!-- 6. Store response in cache for 5 minutes (300 seconds) -->
-        <cache-store-value key="@("chat-" + context.Request.Body.As<string>(true).GetHashCode())" value="@(context.Response.Body.As<string>(true))" duration="300" />
+        <cache-store-value key="@(&quot;chat-&quot; + context.Request.Headers.GetValueOrDefault(&quot;X-Participant-Name&quot;,&quot;mdca&quot;) + &quot;-&quot; + context.Request.Body.As<string>(true).GetHashCode())" value="@(context.Response.Body.As<string>(true))" duration="300" />
         <!-- 7. Log token usage per tenant to Application Insights -->
         <trace source="token-usage" severity="information">
             <message>@{
-        var body = context.Response.Body.As<Newtonsoft.Json.Linq.JObject>(true);
-        return new Newtonsoft.Json.Linq.JObject(
-            new Newtonsoft.Json.Linq.JProperty("tenantId",         context.Subscription.Id),
-            new Newtonsoft.Json.Linq.JProperty("tenantName",       context.Subscription.Name),
-            new Newtonsoft.Json.Linq.JProperty("promptTokens",     body?["promptTokens"]),
-            new Newtonsoft.Json.Linq.JProperty("completionTokens", body?["completionTokens"]),
-            new Newtonsoft.Json.Linq.JProperty("totalTokens",      body?["totalTokens"]),
-            new Newtonsoft.Json.Linq.JProperty("cacheHit",         context.Response.Headers.GetValueOrDefault("X-Cache", "MISS")),
-            new Newtonsoft.Json.Linq.JProperty("timestamp",        System.DateTime.UtcNow.ToString("o"))
-        ).ToString();
-        }</message>
-            <metadata name="tenant-id" value="@(context.Subscription.Id)" />
-            <metadata name="cache-hit" value="@(context.Response.Headers.GetValueOrDefault("X-Cache", "MISS"))" />
+                var body = context.Response.Body.As<Newtonsoft.Json.Linq.JObject>(true);
+                return new Newtonsoft.Json.Linq.JObject(
+                new Newtonsoft.Json.Linq.JProperty("participant",      context.Request.Headers.GetValueOrDefault("X-Participant-Name", "anonymous")),
+                new Newtonsoft.Json.Linq.JProperty("tenantId",         context.Subscription.Id),
+                new Newtonsoft.Json.Linq.JProperty("tenantName",       context.Subscription.Name),
+                new Newtonsoft.Json.Linq.JProperty("promptTokens",     body?["promptTokens"]),
+                new Newtonsoft.Json.Linq.JProperty("completionTokens", body?["completionTokens"]),
+                new Newtonsoft.Json.Linq.JProperty("totalTokens",      body?["totalTokens"]),
+                new Newtonsoft.Json.Linq.JProperty("cacheHit",         context.Response.Headers.GetValueOrDefault("X-Cache", "MISS")),
+                new Newtonsoft.Json.Linq.JProperty("model",            body?["model"]),
+                new Newtonsoft.Json.Linq.JProperty("timestamp",        System.DateTime.UtcNow.ToString("o"))
+                ).ToString();
+            }</message>
+            <metadata name="participant" value="@(context.Request.Headers.GetValueOrDefault(&quot;X-Participant-Name&quot;, &quot;anonymous&quot;))" />
+            <metadata name="cache-hit" value="@(context.Response.Headers.GetValueOrDefault(&quot;X-Cache&quot;, &quot;MISS&quot;))" />
         </trace>
     </outbound>
     <on-error>
