@@ -15,6 +15,7 @@ jobs:
     env:
       APIM_URL: ${{ vars.WORKSHOP_APIM_URL }}
       APIM_SUBSCRIPTION_KEY: ${{ secrets.WORKSHOP_APIM_SUBSCRIPTION_KEY }}
+      SWA_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
 
     steps:
       - name: Checkout
@@ -44,10 +45,18 @@ jobs:
           config_path.write_text(config)
           PY
 
+      - name: Validate Static Web App deployment token
+        run: |
+          if [ -z "$SWA_DEPLOYMENT_TOKEN" ]; then
+            echo "::error::Missing GitHub secret AZURE_STATIC_WEB_APPS_API_TOKEN"
+            echo "Set it in repo Settings > Secrets and variables > Actions > Secrets"
+            exit 1
+          fi
+
       - name: Deploy app folder to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          azure_static_web_apps_api_token: ${{ env.SWA_DEPLOYMENT_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
           app_location: "mdca/mdca dotnetdays 12/app"
