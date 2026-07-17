@@ -1,14 +1,12 @@
-name: Deploy Static Web App
+name: Deploy MDCA Static Web App
 
 on:
   push:
     branches:
-      - main
-      - master
       - development
     paths:
-      - app/**
-      - .github/workflows/deploy-static-web-app.yml
+      - mdca/mdca dotnetdays 12/app/**
+      - .github/workflows/deploy-mdca-static-web-app.yml
   workflow_dispatch:
 
 jobs:
@@ -24,12 +22,12 @@ jobs:
 
       - name: Generate runtime config
         run: |
-          cp app/config.js.template app/config.js
+          cp "mdca/mdca dotnetdays 12/app/config.js.template" "mdca/mdca dotnetdays 12/app/config.js"
           python3 - <<'PY'
           from pathlib import Path
           import os
 
-          config_path = Path("app/config.js")
+          config_path = Path("mdca/mdca dotnetdays 12/app/config.js")
           config = config_path.read_text()
 
           apim_url = os.environ.get("APIM_URL", "").strip()
@@ -52,6 +50,6 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_location: app
+          app_location: "mdca/mdca dotnetdays 12/app"
           output_location: ""
           skip_app_build: true
