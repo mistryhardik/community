@@ -1,0 +1,4 @@
+window.WORKSHOP_CONFIG = {
+  apimUrl: "__APIM_URL__",
+  apimSubscriptionKey: "099995bd12e04a949f3827571338775d"
+};

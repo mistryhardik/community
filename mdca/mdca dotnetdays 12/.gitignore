@@ -1,0 +1,4 @@
+app/config.js
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfvars
